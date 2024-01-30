@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<html>
+
+<head>
+    <title>E</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<body >
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #5B1D7F;
+            height: ;
+
+            left: 0;
+            right: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+    /*     .eyes {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            text-align: center;
+        }
+
+        .eye {
+            width: 12em;
+            height: 12em;
+            background: #fff;
+            display: inline-block;
+            margin: 40px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ball {
+            width: 4em;
+            height: 4em;
+            background: #000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+ */
+        #active-area {
+            height: 750px;
+        }
+
+
+
+        @media only screen and (max-width: 600px) {
+            .eye {
+                width: 6em;
+                height: 6em;
+            }
+
+            .ball {
+                width: 2em;
+                height: 2em;
+            }
+
+
+            button {
+                outline: none;
+            }
+
+            .buttonsContainer {
+                visibility: hidden;
+            }
+
+
+            .scrollTarget {
+                /*position: absolute; */
+                /* border: 2px solid #ff1a35; */
+                /* height: 200px; */
+                /* left: 35px; */
+                /* right: 35px; */
+                /* overflow: scroll; */
+                /* -webkit-overflow-scrolling: touch; */
+            }
+
+
+        }
+
+        @keyframes topFadeOut {
+
+            0% {
+                opacity: 1;
+            }
+
+            70% {
+                opacity: .5;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fade-animate-text {
+            opacity: 0;
+            font-size: 3.4rem;
+            color: white;
+            animation-name: topFadeOut;
+            animation-duration: 5s;
+            z-index: 0;
+            position: absolute;
+            top: 75%;
+            transform: translateY(-50%);
+            width: 100%;
+            text-align: center;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .ad {
+            position: absolute;
+            top: 1%;
+            left: 50%;
+            transform: translatex(-50%);
+            z-index: 99;
+        }
+    </style>
+
+    <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
+
+
+    <div class="main">
+        <div class="scrollTarget">
+            <div id="active_area">
+
+                <!-- <div class="eyes">
+                    <div class="eye">
+                        <div class="ball"></div>
+                    </div>
+
+                    <div class="eye">
+                        <div class="ball"></div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="addthis_inline_share_toolbox"></div>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
+
+
+
+    <script>
+        // mobile detection
+        var touchdevice = false;
+    </script>
+
+<!-- 
+    <script>
+        var balls = document.getElementsByClassName("ball");
+        document.onmousemove = function () {
+            var x = event.clientX * 100 / window.innerWidth + "%";
+            var y = event.clientY * 100 / window.innerHeight + "%";
+            //event.clientX => get the horizontal coordinate of the mouse
+            //event.clientY => get the Vertical coordinate of the mouse
+            //window.innerWidth => get the browser width
+            //window.innerHeight => get the browser height
+
+            for (var i = 0; i < 2; i++) {
+                balls[i].style.left = x;
+                balls[i].style.top = y;
+                balls[i].style.transform = "translate(-" + x + ",-" + y + ")";
+            }
+        }
+    </script>
+
+ -->
+
+
+    <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
+
+
+
+    <div id="buttons" class="buttonsContainer" style="visibility:hidden">
+        <button id="buttonid" class="disableBodyScroll" ontouchstart="">Disable Body Scroll</button>
+        <button class="enableBodyScroll" ontouchstart="">Enable Body Scroll</button>
+    </div>
+
+    <script>
+        document.getElementById("buttonid").click();
+    </script>
+    <script>
+            //Click Anywhere To Add More Eyes!!!	
+            document.addEventListener("click", function (event) {
+                eyes(event.clientX, event.clientY, 20 + 1 * 50, event);
+
+            });
+
+
+            function eyes(x, y, size, event) {
+                var canvas = document.createElement("canvas"),
+                    context = canvas.getContext("2d");
+                document.body.appendChild(canvas);
+                canvas.style.position = "absolute";
+                canvas.style.left = (x - size - 5) + "px";
+                canvas.style.top = (y - size / 2 - 5) + "px";
+
+
+                var rect = canvas.getBoundingClientRect();
+                canvas.width = size * 2 + 10;
+                canvas.height = size + 10;
+
+                onMouseMove(event);
+
+                document.addEventListener("mousemove", onMouseMove);
+
+                function onMouseMove(event) {
+                    var x = event.clientX - rect.left,
+                        y = event.clientY - rect.top;
+                    context.clearRect(0, 0, size * 2 + 10, size + 10);
+                    drawEye(x, y, size / 2 + 5, size / 2 + 5);
+                    drawEye(x, y, size * 1.5 + 5, size / 2 + 5);
+                }
+
+                function drawEye(x, y, cx, cy) {
+                    var dx = x - cx,
+                        dy = y - cy,
+                        angle = Math.atan2(dy, dx);
+                    context.save();
+                    context.translate(cx, cy);
+                    context.rotate(angle);
+                    context.beginPath();
+                    context.arc(0, 0, size / 2, 0, Math.PI * 2);
+                    context.fillStyle = "white";
+                    context.fill();
+                    context.stroke();
+                    context.beginPath();
+                    context.arc(size * 0.4, 0, size * 0.1, 0, Math.PI * 2);
+                    context.fillStyle = "black";
+
+                    context.fill();
+                    context.restore();
+
+                }
+            }
+
+    </script>
+
+</body>
+
+</html>
